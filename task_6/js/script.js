@@ -17,3 +17,46 @@ P.S. Здесь есть несколько вариантов решения з
 
 'use strict';
 
+const movieDB = {
+  movies: [
+      "Логан",
+      "Лига справедливости",
+      "2Ла-ла лэнд",
+      "1Одержимость",
+      "Скотт Пилигрим против..."
+  ]
+};
+
+let films = Array.from(document.querySelectorAll(".promo__interactive-item")),
+    newFilm = document.querySelector(".adding__input"),
+    filmAdd = document.querySelector("button");
+
+document.querySelectorAll(".promo__adv img").forEach((t) => {
+  t.remove();
+});
+
+document.querySelector(".promo__genre").textContent = "Драма";
+
+document.querySelector(".promo__bg").style.backgroundImage = "url('img/bg.jpg')";
+
+function movSort() {
+  movieDB.movies.sort();
+  for (let i = 0; i < films.length; i++) {
+    // if (movieDB.movies[i].length > 21) {
+    //   films[i] = movieDB.movies[i].substring(0, 20);
+    // } else {
+      
+    // };
+    films[i].innerHTML = i+1 + '. ' + movieDB.movies[i] + '<div class="delete"></div>';
+  }
+}
+
+movSort();
+
+filmAdd.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  let addFilm = newFilm.value;
+  movieDB.movies.push(addFilm);
+  movSort();
+});
