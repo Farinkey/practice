@@ -23,12 +23,13 @@ const movieDB = {
       "Лига справедливости",
       "2Ла-ла лэнд",
       "1Одержимость",
-      "Скотт Пилигрим против..."
+      "Скотт Пилигрим против всех"
   ]
 };
 
 let films = Array.from(document.querySelectorAll(".promo__interactive-item")),
     newFilm = document.querySelector(".adding__input"),
+    delFilm = Array.from(document.querySelectorAll(".promo__interactive-item div")),
     filmAdd = document.querySelector("button");
 
 document.querySelectorAll(".promo__adv img").forEach((t) => {
@@ -42,12 +43,11 @@ document.querySelector(".promo__bg").style.backgroundImage = "url('img/bg.jpg')"
 function movSort() {
   movieDB.movies.sort();
   for (let i = 0; i < films.length; i++) {
-    // if (movieDB.movies[i].length > 21) {
-    //   films[i] = movieDB.movies[i].substring(0, 20);
-    // } else {
-      
-    // };
-    films[i].innerHTML = i+1 + '. ' + movieDB.movies[i] + '<div class="delete"></div>';
+    if (movieDB.movies[i].length > 21) {
+      films[i].innerHTML = i+1 + '. ' + movieDB.movies[i].substring(0, 20) + '...' + '<div class="delete"></div>';
+    } else {
+      films[i].innerHTML = i+1 + '. ' + movieDB.movies[i] + '<div class="delete"></div>';
+    }
   }
 }
 
@@ -60,3 +60,18 @@ filmAdd.addEventListener('click', function (e) {
   movieDB.movies.push(addFilm);
   movSort();
 });
+
+delFilm.forEach((film) => {
+  film.addEventListener('click', delBtn(event));
+});
+
+function delBtn(event) {
+  return function() {
+    event.target.preventDefault();
+      
+    let filmName = (event.target.parentElement.textContent).slice(3);
+    let exFilm = movieDB.movies.indexOf(filmName);
+    movieDB.movies.splice(exFilm, 1);
+    movSort();
+  };
+}
