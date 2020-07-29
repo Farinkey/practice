@@ -29,7 +29,6 @@ const movieDB = {
 
 let films = Array.from(document.querySelectorAll(".promo__interactive-item")),
     newFilm = document.querySelector(".adding__input"),
-    delFilm = Array.from(document.querySelectorAll(".promo__interactive-item div")),
     filmAdd = document.querySelector("button");
 
 document.querySelectorAll(".promo__adv img").forEach((t) => {
@@ -42,9 +41,9 @@ document.querySelector(".promo__bg").style.backgroundImage = "url('img/bg.jpg')"
 
 function movSort() {
   movieDB.movies.sort();
-  for (let i = 0; i < films.length; i++) {
+  for (let i = 0; i < movieDB.movies.length; i++) {
     if (movieDB.movies[i].length > 21) {
-      films[i].innerHTML = i+1 + '. ' + movieDB.movies[i].substring(0, 20) + '...' + '<div class="delete"></div>';
+      films[i].innerHTML = i+1 + '. ' + movieDB.movies[i].substring(0, 21) + '...' + '<div class="delete"></div>';
     } else {
       films[i].innerHTML = i+1 + '. ' + movieDB.movies[i] + '<div class="delete"></div>';
     }
@@ -59,19 +58,17 @@ filmAdd.addEventListener('click', function (e) {
   let addFilm = newFilm.value;
   movieDB.movies.push(addFilm);
   movSort();
+  if (document.querySelector('input[type="checkbox"]').checked) {
+    console.log("Добавляем любимый фильм");
+  }
+  e.target.parentElement.reset();
 });
 
-delFilm.forEach((film) => {
-  film.addEventListener('click', delBtn(event));
-});
-
-function delBtn(event) {
-  return function() {
-    event.target.preventDefault();
-      
-    let filmName = (event.target.parentElement.textContent).slice(3);
+document.querySelectorAll(".delete").forEach((film) => {
+  film.addEventListener('click', () => {
+    let filmName = (film.parentElement.textContent).slice(3);
     let exFilm = movieDB.movies.indexOf(filmName);
     movieDB.movies.splice(exFilm, 1);
     movSort();
-  };
-}
+  });
+});
