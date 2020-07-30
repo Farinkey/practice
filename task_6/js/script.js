@@ -65,10 +65,13 @@ filmAdd.addEventListener('click', function (e) {
 });
 
 document.querySelectorAll(".delete").forEach((film) => {
-  film.addEventListener('click', () => {
-    let filmName = (film.parentElement.textContent).slice(3);
+  film.addEventListener('click', (e) => {
+    let filmName = (e.target.parentElement.textContent).slice(3);
     let exFilm = movieDB.movies.indexOf(filmName);
-    movieDB.movies.splice(exFilm, 1);
+    e.target.parentElement.remove();
+    if (exFilm != -1) {
+      movieDB.movies.splice(exFilm, 1);
+    }
     movSort();
   });
 });
